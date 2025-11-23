@@ -1,10 +1,9 @@
-import express, { Application } from "express";
-import userRoutes from "@/users/user.routes";
+import express, { Application, Router } from "express";
 
 export class App {
   private app: Application;
 
-  constructor() {
+  constructor(private routes: { path: string; router: Router }[]) {
     this.app = express();
     this.initializeMiddlewares();
     this.initializeRoutes();
@@ -21,6 +20,8 @@ export class App {
   }
 
   private initializeRoutes(): void {
-    this.app.use("/users", userRoutes);
+    this.routes.forEach((route) => {
+      this.app.use(route.path, route.router);
+    });
   }
 }
