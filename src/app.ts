@@ -11,29 +11,23 @@ export class App {
     private errorHandlerMiddleware: ErrorHandlerMiddleware,
   ) {
     this.app = express();
-    this.initializeMiddlewares();
-    this.initializeRoutes();
-    this.initializeErrorHandler(); // Must be registered after routes
+
+    // Initialize middlewares
+    this.app.use(express.json());
+    this.app.use(this.loggerMiddleware.log);
+
+    // Initialize routes
+    this.routes.forEach((route) => {
+      this.app.use(route.path, route.router);
+    });
+
+    // Initialize error handling middleware (should be the last middleware)
+    this.app.use(this.errorHandlerMiddleware.handle);
   }
 
   public start(port: number, environment: string): void {
     this.app.listen(port, () => {
       console.log(`Server is running on port ${port} in ${environment} mode.`);
     });
-  }
-
-  private initializeMiddlewares(): void {
-    this.app.use(express.json());
-    this.app.use(this.loggerMiddleware.log);
-  }
-
-  private initializeRoutes(): void {
-    this.routes.forEach((route) => {
-      this.app.use(route.path, route.router);
-    });
-  }
-
-  private initializeErrorHandler(): void {
-    this.app.use(this.errorHandlerMiddleware.handle);
   }
 }
