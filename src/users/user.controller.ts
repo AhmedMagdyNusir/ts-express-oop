@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { UserService } from "./user.service";
+import { ApiError } from "@/utils/api-error";
 
 export class UserController {
   constructor(private userService: UserService) {}
@@ -15,40 +16,25 @@ export class UserController {
     res.json(users);
   };
 
-  getUserById = (req: Request, res: Response): void => {
+  getUserById = (req: Request, res: Response, next: NextFunction): void => {
     const id = parseInt(req.params.id);
     const user = this.userService.getById(id);
-
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-
+    if (!user) return next(new ApiError(404, "User not found"));
     res.json(user);
   };
 
-  updateUser = (req: Request, res: Response): void => {
+  updateUser = (req: Request, res: Response, next: NextFunction): void => {
     const id = parseInt(req.params.id);
     const { name, email } = req.body;
     const user = this.userService.update(id, name, email);
-
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-
+    if (!user) return next(new ApiError(404, "User not found"));
     res.json(user);
   };
 
-  deleteUser = (req: Request, res: Response): void => {
+  deleteUser = (req: Request, res: Response, next: NextFunction): void => {
     const id = parseInt(req.params.id);
     const success = this.userService.delete(id);
-
-    if (!success) {
-      res.status(404).json({ message: "User not found" });
-      return;
-    }
-
+    if (!success) return next(new ApiError(404, "User not found"));
     res.status(204).send();
   };
 }
