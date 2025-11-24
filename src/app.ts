@@ -9,9 +9,9 @@ export class App {
     this.initializeRoutes();
   }
 
-  public start(port: number): void {
+  public start(port: number, environment: string): void {
     this.app.listen(port, () => {
-      console.log(`Server is running on port ${port} in ${process.env.ENVIRONMENT} mode.`);
+      console.log(`Server is running on port ${port} in ${environment} mode.`);
     });
   }
 
