@@ -12,14 +12,14 @@ export class UserController {
   };
 
   getUsers = (req: Request, res: Response): void => {
-    const users = this.userService.getAll();
+    const users = this.userService.list();
     res.json(users);
   };
 
-  getUserById = (req: Request, res: Response, next: NextFunction): void => {
+  getUser = (req: Request, res: Response, next: NextFunction): void => {
     const id = parseInt(req.params.id);
-    const user = this.userService.getById(id);
-    if (!user) return next(new ApiError(404, "User not found"));
+    const user = this.userService.get(id);
+    if (!user) return next(new ApiError(404, "User not found."));
     res.json(user);
   };
 
@@ -27,14 +27,14 @@ export class UserController {
     const id = parseInt(req.params.id);
     const { name, email } = req.body;
     const user = this.userService.update(id, name, email);
-    if (!user) return next(new ApiError(404, "User not found"));
+    if (!user) return next(new ApiError(404, "User not found."));
     res.json(user);
   };
 
   deleteUser = (req: Request, res: Response, next: NextFunction): void => {
     const id = parseInt(req.params.id);
     const success = this.userService.delete(id);
-    if (!success) return next(new ApiError(404, "User not found"));
+    if (!success) return next(new ApiError(404, "User not found."));
     res.status(204).send();
   };
 }
