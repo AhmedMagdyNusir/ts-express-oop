@@ -55,3 +55,5 @@ export class Config {
     return value;
   }
 }
+
+export const config = new Config();
