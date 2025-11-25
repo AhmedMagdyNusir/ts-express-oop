@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { config } from "@/utils/config";
+import { config } from "@/config";
 
 export class ErrorHandlerMiddleware {
   public handle = (err: any, req: Request, res: Response, next: NextFunction): void => {
