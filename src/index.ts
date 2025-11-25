@@ -1,6 +1,6 @@
 import { App } from "@/app";
 import { config } from "@/utils/config";
-import { createUserRoutes } from "@/users/user.routes";
+import { createUserRoutes } from "@/modules/users/user.routes";
 import { LoggerMiddleware } from "@/middlewares/logger.middleware";
 import { ErrorHandlerMiddleware } from "@/middlewares/error-handler.middleware";
 
